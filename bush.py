@@ -1,9 +1,11 @@
-# ====== Bush 3 ======
+# ====== Bush 2 ======
 
 import time
 import os
+import subprocess
+import socket
 
-COMMAND_LIST = ["hello", "version", "help", "exit", "time", "ls", "pwd", "color"]
+COMMAND_LIST = ["hello", "version", "help", "exit", "time", "ls", "pwd", "color", "clear", "fastfetch", "start", "getip"]
 
 COLORS = {
     "red": "\033[31m",
@@ -17,16 +19,16 @@ CURRENT_COLOR = "\033[37m"
 
 ASCII_ART = r"""
 +-------------------------------+
-| ____            _       _____ |
-|| __ ) _   _ ___| |__   |___ / |
-||  _ \| | | / __| '_ \    |_ \ |
-|| |_) | |_| \__ \ | | |  ___) ||
-||____/ \__,_|___/_| |_| |____/ |
+| ____            _       ____  |
+|| __ ) _   _ ___| |__   |___ \ |
+||  _ \| | | / __| '_ \    __) ||
+|| |_) | |_| \__ \ | | |  / __/ |
+||____/ \__,_|___/_| |_| |_____||
 +-------------------------------+
 """
 
 def Boot():
-    print("\n--- STARTING BUSH 3 ---\n")
+    print("\n--- STARTING BUSH ---\n")
 
     print("Loading packages...")
     time.sleep(1.5)
@@ -48,15 +50,15 @@ def Boot():
 
     print(ASCII_ART)
 
-    print("\nWelcome to Bush 3!\n")
+    print("\nWelcome to Bush 2!\n")
 
-Boot()
+#Boot() # Comment this line to disable boot
 
 def HelloCommand():
     print("Hello, User!")
 
 def VersionCommand():
-    print("bush version: 3")
+    print("bush 2")
 
 def HelpCommand():
     print("bush: available commands: ")
@@ -84,6 +86,29 @@ def ColorCommand():
     else:
         print("bush: color not supported")
 
+def ClearCommand():
+    subprocess.run("clear", shell=True)
+
+def FastfetchCommand():
+    try:
+        subprocess.run("fastfetch")
+    except Exception as e:
+        print("bush: error while running fastfetch, please check if fastfetch is installed on your computer")
+
+def StartCommand():
+    program = str(input("bush: enter the program name ").lower())
+    try:
+        subprocess.run(program)
+    except Exception as e:
+        print(f"bush: cannot run {program}")
+
+def GetIpCommand():
+    hostname = socket.gethostname()
+    ipAddress = socket.gethostbyname(hostname)
+
+    print("-- Network information --\n")
+    print(f"Hostname: {hostname}\nIP Adress: {ipAddress}")
+
 while True:
     try:
         command = str(input(CURRENT_COLOR + "bush> ").lower())
@@ -105,6 +130,14 @@ while True:
                 LsCommand()
             case "color":
                 ColorCommand()
+            case "clear":
+                ClearCommand()
+            case "fastfetch":
+                FastfetchCommand()
+            case "start":
+                StartCommand()
+            case "getip":
+                GetIpCommand()
             case _:
                 print(f"bush: Unknown command {command}")
     except KeyboardInterrupt:
